@@ -1,0 +1,22 @@
+# Compiled binaries
+ST-test
+MT-test
+arm-optimized
+
+# Object files
+*.o
+
+# Benchmark output
+benchmark_results.csv
+
+# Generated figures
+*.png
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# macOS
+.DS_Store
