@@ -158,12 +158,3 @@ Notable flags:
   units; eliminates vtable dispatch overhead on any virtual calls
 - `-ffast-math`: allows reassociation and approximate math; safe here since no
   floating-point is used in the hot path
-
----
-
-## Resume Headline
-
-> Implemented ARM M1-optimized Go territory scoring using NEON SIMD intrinsics,
-> packed bitboards, and cache-aligned span-fill BFS. Achieved **sub-microsecond**
-> per-evaluation latency (956 ns mean, 900 ns min), a **15.8× speedup** over the
-> single-threaded baseline — fast enough for real-time game-tree search.
