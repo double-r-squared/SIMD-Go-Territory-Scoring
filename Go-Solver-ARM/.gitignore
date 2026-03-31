@@ -9,6 +9,9 @@ arm-optimized
 # Benchmark output
 benchmark_results.csv
 
+# ROAD MAP
+ROADMAP.md
+
 # Generated figures
 *.png
 
