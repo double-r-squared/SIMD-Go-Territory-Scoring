@@ -96,48 +96,6 @@ The **middle 19 columns** (indices 19–37 in each row) correspond to the actual
 
 ---
 
-## Implementation Progression
-
-### state.cpp — Reference Implementation
-
-**File**: [extra/state.cpp](extra/state.cpp)
-
-This is the full, correct Go game engine. Not a benchmark — it's the reference to validate correctness and visualize the algorithm.
-
-#### Features Not In Benchmarks
-
-**Liberty counting** (`countLiberties`):
-- BFS through a group of same-color stones
-- Counts unique empty neighbor positions (liberties)
-- Uses `std::bitset<OFFSET>` for visited and `std::array<int, OFFSET>` stack
-
-**Capture detection** (`checkAndProcessCaptures`):
-- After placing a stone, checks all opponent neighbors
-- If a neighbor group has no liberties, removes it (clears bits from `data`)
-- Uses `hasLiberties` (BFS), `getGroup` (BFS), then `removeStones`
-
-**Suicide check** (`isSuicideMove`):
-- Before placing, checks if the move would leave the placed stone's group with zero liberties after any captures
-- `wouldHaveLiberties`: BFS through own group checking for empty adjacents
-- `wouldCaptureGroup`: BFS through opponent group checking if it would be reduced to zero liberties
-
-**Turn management**: Bits 722 (pass), 723 (turn), 724 (active) encoded in the same `data` array.
-
-#### ExpandedBoard in state.cpp
-
-Uses a **mirror-traversal BFS** for vertical boundaries. When the flood-fill moves above row 0 or below row 18, it "reflects" into `ny = 1` or `ny = 17` respectively (one bounce allowed). A `mirrorFlags` array tracks whether each cell was reached via a mirror step. A second OOB move from a mirrored cell is treated as a dead-end (not an edge escape). This is a different (more complex) boundary strategy than the benchmark versions use.
-
-#### Pretty Printing
-
-`prettyPrint()` renders the board to terminal with ANSI colors:
-- Blue `●` for black stones
-- Red `●` for white stones
-- `◦` for empty
-
-`printEnclosedBoard()` overlays `*` (green) for detected territory.
-
----
-
 ### ST-test.cpp — Single-Threaded Benchmark
 
 **File**: [ST-test.cpp](ST-test.cpp)
