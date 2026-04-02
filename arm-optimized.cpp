@@ -118,9 +118,9 @@ struct __attribute__((aligned(64))) OptimizedState {
     __attribute__((noinline))
     bool makeMove(int bitIndex) {
         if (bitIndex < 0 || bitIndex >= 2 * OFFSET) [[unlikely]] return false;
-        if (getStone(bitIndex))                      [[unlikely]] return false;
+        if (getStone(bitIndex))                     [[unlikely]] return false;
         int opp = (bitIndex < OFFSET) ? bitIndex + OFFSET : bitIndex - OFFSET;
-        if (getStone(opp))                           [[unlikely]] return false;
+        if (getStone(opp))                          [[unlikely]] return false;
         data[bitIndex >> 5] |= BIT_MASKS[bitIndex & 31];
         return true;
     }
@@ -442,7 +442,7 @@ struct __attribute__((aligned(64))) OptimizedState {
 // (OS zero-initializes, no runtime cost), keeps 800 KB off the stack.
 // ============================================================================
 
-static constexpr int ROUNDS = 100000;
+static constexpr int ROUNDS = 100000000;
 alignas(64) static std::array<int, ROUNDS> black_results;
 alignas(64) static std::array<int, ROUNDS> white_results;
 
@@ -520,15 +520,16 @@ int main(int argc, char* argv[]) {
         }
     };
 
-    auto t_start = std::chrono::high_resolution_clock::now();
-
     std::vector<std::thread> threads;
     threads.reserve(num_cores);
+
+    auto t_start = std::chrono::high_resolution_clock::now();
     launchRange(&black_exp, num_black, black_results.data(), threads);
     launchRange(&white_exp, num_white, white_results.data(), threads);
     for (auto& t : threads) t.join();
-
     auto t_end = std::chrono::high_resolution_clock::now();
+
+
     auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(t_end - t_start).count();
 
     std::cout << "Stones: " << TARGET_STONES

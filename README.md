@@ -29,7 +29,9 @@ The goal was to push this into sub-microsecond territory suitable for real-time 
 | ARM Optimized (this repo) | 4 P-cores | 956 | 954 | 900 | 31 | **15.8×** |
 
 > All times are nanoseconds per board-evaluation pair (black + white scored simultaneously).
-> Benchmark: `make benchmark` runs each binary 100 times and writes `benchmark_results.csv`.
+> Benchmark: `make benchmark` runs each binary 100 times and writes `benchmark_results.csv`
+
+**Note:** The ARM optimized statistic is the speed under maximum load. By running the test 100 million times we heat up the CPU to achive speeds close to the limit of what is possible on this hardware. Speed past 100 million iterations did not yield faster execution.
 
 ---
 
